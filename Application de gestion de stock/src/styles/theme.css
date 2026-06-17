@@ -1,0 +1,327 @@
+@custom-variant dark (&:is(.dark *));
+
+/* Light Mode — StockFlow Pro */
+:root {
+  --font-size: 14px;
+  --background: #F5F4F0;
+  --foreground: #1A1A2E;
+  --card: #FFFFFF;
+  --card-foreground: #1A1A2E;
+  --popover: #FFFFFF;
+  --popover-foreground: #1A1A2E;
+  --primary: #2D7A4F;
+  --primary-foreground: #FFFFFF;
+  --primary-light: #E6F4EC;
+  --secondary: #F5F4F0;
+  --secondary-foreground: #1A1A2E;
+  --muted: #F5F4F0;
+  --muted-foreground: #6B7280;
+  --text-muted: #9CA3AF;
+  --accent: #2D7A4F;
+  --accent-foreground: #FFFFFF;
+  --destructive: #E24B4A;
+  --destructive-foreground: #FFFFFF;
+  --destructive-light: #FCEBEB;
+  --destructive-text: #991B1B;
+  --success: #065F46;
+  --success-light: #D1FAE5;
+  --warning: #BA7517;
+  --warning-light: #FAEEDA;
+  --info: #185FA5;
+  --info-light: #E6F1FB;
+  --border: rgba(0, 0, 0, 0.12);
+  --border-light: rgba(0, 0, 0, 0.08);
+  --input: transparent;
+  --input-background: #FFFFFF;
+  --switch-background: #dee2e6;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: #2D7A4F;
+  --chart-1: #2D7A4F;
+  --chart-2: #E24B4A;
+  --chart-3: #185FA5;
+  --chart-4: #BA7517;
+  --chart-5: #065F46;
+  --radius: 12px;
+}
+
+/* Dark Mode */
+.dark {
+  --background: #0d1117;
+  --foreground: #e6edf3;
+  --card: #161b22;
+  --card-foreground: #e6edf3;
+  --popover: #161b22;
+  --popover-foreground: #e6edf3;
+  --primary: #17A589;
+  --primary-foreground: #FFFFFF;
+  --primary-light: rgba(23, 165, 137, 0.15);
+  --secondary: #21262d;
+  --secondary-foreground: #c9d1d9;
+  --muted: #21262d;
+  --muted-foreground: #8b949e;
+  --text-muted: #6c757d;
+  --accent: #17A589;
+  --accent-foreground: #FFFFFF;
+  --destructive: #f85149;
+  --destructive-foreground: #ffffff;
+  --destructive-light: rgba(248, 81, 73, 0.15);
+  --destructive-text: #ff7b72;
+  --success: #56d364;
+  --success-light: rgba(86, 211, 100, 0.15);
+  --warning: #d29922;
+  --warning-light: rgba(210, 153, 34, 0.15);
+  --info: #58a6ff;
+  --info-light: rgba(88, 166, 255, 0.15);
+  --border: rgba(240, 246, 252, 0.1);
+  --border-light: rgba(240, 246, 252, 0.06);
+  --input: transparent;
+  --input-background: #21262d;
+  --switch-background: #30363d;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: #17A589;
+  --chart-1: #17A589;
+  --chart-2: #f85149;
+  --chart-3: #58a6ff;
+  --chart-4: #d29922;
+  --chart-5: #56d364;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-light: var(--primary-light);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-text-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-light: var(--destructive-light);
+  --color-destructive-text: var(--destructive-text);
+  --color-success: var(--success);
+  --color-success-light: var(--success-light);
+  --color-warning: var(--warning);
+  --color-warning-light: var(--warning-light);
+  --color-info: var(--info);
+  --color-info-light: var(--info-light);
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* ─── Font variables ──────────────────────────────────────────────────────── */
+:root {
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+/* ─── Named text styles — mirrors the Figma text style spec ──────────────── */
+
+/* /Display  32px · 500 · -0.02em */
+.ts-display {
+  font-family: var(--font-sans);
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* /H1  26px · 500 · -0.01em */
+.ts-h1 {
+  font-family: var(--font-sans);
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+/* /H2  20px · 500 */
+.ts-h2 {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+/* /H3  18px · 500 */
+.ts-h3 {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.3;
+}
+
+/* /Body-Strong  14px · 500 · lh 1.6 */
+.ts-body-strong {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+/* /Body  14px · 400 · lh 1.6 */
+.ts-body {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* /Body-Small  13px · 400 · lh 1.5 */
+.ts-body-small {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* /Label  12px · 500 · 0.05em · UPPERCASE */
+.ts-label {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+/* /Caption  11px · 500 · 0.07em · UPPERCASE */
+.ts-caption {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+/* /Mono  13px · monospace · tabular-nums */
+.ts-mono {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    font-size: var(--font-size);
+  }
+
+  /* /Display as h1 default */
+  h1 {
+    font-family: var(--font-sans);
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  /* /H2 as h2 default */
+  h2 {
+    font-family: var(--font-sans);
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.25;
+  }
+
+  /* /H3 as h3 default */
+  h3 {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.3;
+  }
+
+  h4 {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  /* /Label as label default */
+  label {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+
+  button {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  input, textarea, select {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  /* /Caption as th default */
+  th {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+
+  td {
+    font-family: var(--font-sans);
+    font-size: 13.5px;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    line-height: 1.5;
+  }
+}
