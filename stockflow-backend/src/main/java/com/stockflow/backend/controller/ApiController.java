@@ -69,7 +69,6 @@ public Mouvement addMouvement(@RequestBody Mouvement mouvement) {
 
             if (article.getStock() < mouvement.getQuantite()) {
                 throw new RuntimeException("Stock insuffisant");
-                exit 0;
             }
 
             article.setStock(article.getStock() - mouvement.getQuantite());

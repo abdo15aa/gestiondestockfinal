@@ -1,1 +1,21 @@
-node_modules
+# Dependencies
+node_modules/
+
+# Frontend build
+Application de gestion de stock/dist/
+
+# Backend build
+stockflow-backend/target/
+
+# Local database (H2 — created automatically on first run)
+stockflow-backend/data/*.db
+stockflow-backend/data/*.trace.db
+
+# IDE / OS
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

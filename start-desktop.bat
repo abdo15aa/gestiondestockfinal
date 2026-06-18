@@ -6,5 +6,9 @@ echo.
 echo Demarrage en cours... Veuillez patienter.
 echo L'application se lancera dans sa propre fenetre.
 
-cd "Application de gestion de stock"
-npm run electron:dev
+cd /d "%~dp0Application de gestion de stock"
+if not exist node_modules (
+    echo Installation des dependances npm...
+    call npm install
+)
+call npm run electron:dev
