@@ -1,5 +1,4 @@
 package com.stockflow.backend.model;
-
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -8,8 +7,7 @@ import lombok.Data;
 public class Notification {
     @Id
     private String id;
-    
-    private String severity; // "critical", "warning", "info"
+    private String severity;
     private String title;
     private String description;
     private String timestamp;

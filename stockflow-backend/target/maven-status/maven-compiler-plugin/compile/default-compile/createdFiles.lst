@@ -1,0 +1,11 @@
+com\stockflow\backend\model\Mouvement$MovementType.class
+com\stockflow\backend\model\Mouvement.class
+com\stockflow\backend\model\Article.class
+com\stockflow\backend\repository\ArticleRepository.class
+com\stockflow\backend\model\Notification.class
+com\stockflow\backend\model\Fournisseur.class
+com\stockflow\backend\repository\MouvementRepository.class
+com\stockflow\backend\StockflowBackendApplication.class
+com\stockflow\backend\model\Article$StockStatus.class
+com\stockflow\backend\repository\NotificationRepository.class
+com\stockflow\backend\repository\FournisseurRepository.class

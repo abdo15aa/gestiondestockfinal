@@ -37,7 +37,7 @@ import {
 
 type Page = "dashboard" | "articles" | "mouvements" | "fournisseurs" | "notifications";
 type MovementType = "ENTREE" | "SORTIE";
-type StockStatus = "EN_STOCK" | "STOCK_BAS" | "RUPTURE";
+type StockStatus = "EN_STOCK" | "RUPTURE";
 
 interface Movement {
   id: string;
@@ -90,11 +90,11 @@ export let MOVEMENTS: Movement[] = [
 
 export let ARTICLES: Article[] = [
   { ref: "VIS-M6-12", designation: "Vis M6×12 inox", categorie: "Visserie", stock: 8420, seuil: 1000, fournisseur: "Boulonnerie Lefranc", statut: "EN_STOCK" },
-  { ref: "ROD-ALU-40", designation: "Tige filetée alu Ø40", categorie: "Profilés", stock: 145, seuil: 200, fournisseur: "Métaux Guilbert", statut: "STOCK_BAS" },
+  { ref: "ROD-ALU-40", designation: "Tige filetée alu Ø40", categorie: "Profilés", stock: 145, seuil: 200, fournisseur: "Métaux Guilbert", statut: "RUPTURE" },
   { ref: "JNT-SIL-15", designation: "Joint silicone 15mm", categorie: "Étanchéité", stock: 0, seuil: 500, fournisseur: "SealPro", statut: "RUPTURE" },
-  { ref: "CAB-CU-6", designation: "Câble cuivre 6mm²", categorie: "Câblage", stock: 320, seuil: 400, fournisseur: "Fil & Câble SA", statut: "STOCK_BAS" },
+  { ref: "CAB-CU-6", designation: "Câble cuivre 6mm²", categorie: "Câblage", stock: 320, seuil: 400, fournisseur: "Fil & Câble SA", statut: "RUPTURE" },
   { ref: "RLT-6205", designation: "Roulement 6205-2RS", categorie: "Roulements", stock: 1840, seuil: 300, fournisseur: "NSK France", statut: "EN_STOCK" },
-  { ref: "FLT-AIR-G4", designation: "Filtre à air G4 600×600", categorie: "Filtration", stock: 28, seuil: 40, fournisseur: "Camfil", statut: "STOCK_BAS" },
+  { ref: "FLT-AIR-G4", designation: "Filtre à air G4 600×600", categorie: "Filtration", stock: 28, seuil: 40, fournisseur: "Camfil", statut: "RUPTURE" },
   { ref: "GNT-NITR-L", designation: "Gants nitrile T.L (boîte)", categorie: "EPI", stock: 2160, seuil: 500, fournisseur: "Uvex Safety", statut: "EN_STOCK" },
 ];
 
@@ -256,7 +256,6 @@ function MovementBadge({ type }: { type: MovementType }) {
 function StatusBadge({ status }: { status: StockStatus }) {
   const config = {
     EN_STOCK: { bg: "bg-success-light", text: "text-success", label: "En stock" },
-    STOCK_BAS: { bg: "bg-warning-light", text: "text-warning", label: "Stock bas" },
     RUPTURE: { bg: "bg-destructive-light", text: "text-destructive-text", label: "Rupture" },
   };
   const { bg, text, label } = config[status];
@@ -457,13 +456,13 @@ function ArticlesPage({ refreshKey, onDataChange }: PageProps) {
             <div>
               <div className="text-[12px] font-medium text-muted-foreground uppercase tracking-[0.05em] mb-2">Statut</div>
               <div className="flex flex-wrap gap-2">
-                {(["TOUS", "EN_STOCK", "STOCK_BAS", "RUPTURE"] as const).map(status => (
+                {(["TOUS", "EN_STOCK", "RUPTURE"] as const).map(status => (
                   <button
                     key={status}
                     onClick={() => setStatusFilter(status)}
                     className={`px-3 py-1.5 rounded-full text-[12px] font-medium transition-colors ${statusFilter === status ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:bg-secondary/90"}`}
                   >
-                    {status === "TOUS" ? "Tous" : status === "EN_STOCK" ? "En stock" : status === "STOCK_BAS" ? "Stock bas" : "Rupture"}
+                    {status === "TOUS" ? "Tous" : status === "EN_STOCK" ? "En stock" : "Rupture"}
                   </button>
                 ))}
               </div>
@@ -561,8 +560,7 @@ function ArticlesPage({ refreshKey, onDataChange }: PageProps) {
               } catch (err) {
                 console.error("API non disponible, sauvegarde locale.");
               }
-              if (savedArticle.stock <= 0) savedArticle.statut = "RUPTURE";
-              else if (savedArticle.stock <= savedArticle.seuil) savedArticle.statut = "STOCK_BAS";
+              if (savedArticle.stock <= savedArticle.seuil) savedArticle.statut = "RUPTURE";
               else savedArticle.statut = "EN_STOCK";
 
               if (editing) {
@@ -715,6 +713,15 @@ function MouvementsPage({ refreshKey, onDataChange }: PageProps) {
     return typeMatch && periodMatch;
   });
 
+  // Calculate totals for the current period
+  const totalEntrees = filteredMovements
+    .filter(m => m.type === "ENTREE")
+    .reduce((sum, m) => sum + m.quantite, 0);
+  const totalSorties = filteredMovements
+    .filter(m => m.type === "SORTIE")
+    .reduce((sum, m) => sum + m.quantite, 0);
+  const solde = totalEntrees - totalSorties;
+
   const exportMovementsCSV = (rows: Movement[]) => {
     const headers = ["id","date","article","type","quantite","operateur"];
     const csv = [headers.join(",")].concat(rows.map(r => headers.map(h => `"${(r as any)[h] ?? ""}"`).join(","))).join("\n");
@@ -800,19 +807,23 @@ function MouvementsPage({ refreshKey, onDataChange }: PageProps) {
         </div>
         <div className="bg-card border-[0.5px] border-border rounded-xl shadow-sm p-6 flex flex-col justify-center">
           {/* /Label */}
-          <div className="text-[12px] font-medium text-muted-foreground uppercase tracking-[0.05em] mb-3">Total cette semaine</div>
+          <div className="text-[12px] font-medium text-muted-foreground uppercase tracking-[0.05em] mb-3">
+            {periodFilter === "TOUS" ? "Total global" : periodFilter === "AUJOURDHUI" ? "Total aujourd'hui" : periodFilter === "7_JOURS" ? "Total cette semaine" : "Total ce mois"}
+          </div>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-[14px] font-normal text-muted-foreground">Entrées</span>
-              <span className="text-[24px] font-medium text-success tracking-[-0.02em] tabular-nums">2,250</span>
+              <span className="text-[24px] font-medium text-success tracking-[-0.02em] tabular-nums">{totalEntrees.toLocaleString()}</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-[14px] font-normal text-muted-foreground">Sorties</span>
-              <span className="text-[24px] font-medium text-destructive-text tracking-[-0.02em] tabular-nums">1,690</span>
+              <span className="text-[24px] font-medium text-destructive-text tracking-[-0.02em] tabular-nums">{totalSorties.toLocaleString()}</span>
             </div>
             <div className="pt-3 border-t border-border-light flex items-center justify-between">
               <span className="text-[14px] font-medium text-foreground">Solde</span>
-              <span className="text-[24px] font-medium text-primary tracking-[-0.02em] tabular-nums">+560</span>
+              <span className={`text-[24px] font-medium tracking-[-0.02em] tabular-nums ${solde >= 0 ? "text-primary" : "text-destructive-text"}`}>
+                {solde >= 0 ? "+" : ""}{solde.toLocaleString()}
+              </span>
             </div>
           </div>
         </div>
@@ -883,8 +894,7 @@ function MouvementsPage({ refreshKey, onDataChange }: PageProps) {
                 if (type === 'ENTREE') targetArticle.stock += mvt.quantite;
                 if (type === 'SORTIE') targetArticle.stock -= mvt.quantite;
                 
-                if (targetArticle.stock <= 0) targetArticle.statut = "RUPTURE";
-                else if (targetArticle.stock <= targetArticle.seuil) targetArticle.statut = "STOCK_BAS";
+                if (targetArticle.stock <= targetArticle.seuil) targetArticle.statut = "RUPTURE";
                 else targetArticle.statut = "EN_STOCK";
                 
                 checkAndNotifyStock(targetArticle);
@@ -1096,12 +1106,10 @@ function FournisseursPage({ refreshKey, onDataChange }: PageProps) {
             try {
               const nom = (document.getElementById('f-nom') as HTMLInputElement).value;
               const contact = (document.getElementById('f-contact') as HTMLInputElement).value;
-              const articlesInput = (document.getElementById('f-articles') as HTMLInputElement).value;
 
               const newF: any = {
                 nom,
                 contact,
-                articles: articlesInput,
               };
               if (editing) {
                 newF.idFournisseur = editing.idFournisseur;
